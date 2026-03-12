@@ -13,12 +13,10 @@
     };
   };
   outputs = { self, nixpkgs, agenix, opencode, ... }:
-  let
-    system = "x86_64-linux";
-  in
   {
-    packages.${system} = {
-      opencode = opencode.packages.${system}.default;
+    packages.x86_64-linux = {
+      opencode = opencode.packages.x86_64-linux.default;
+      agenix = agenix.packages.x86_64-linux.default;
     };
   };
 }
