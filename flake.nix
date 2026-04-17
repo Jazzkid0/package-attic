@@ -11,8 +11,12 @@
       url = "github:anomalyco/opencode";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
-  outputs = { self, nixpkgs, agenix, opencode, ... }:
+  outputs = { self, nixpkgs, agenix, opencode, fenix, ... }:
   let
     pkgs = import nixpkgs { system = "x86_64-linux"; };
     lib = pkgs.lib;
@@ -21,11 +25,15 @@
     packages.x86_64-linux = {
       opencode = opencode.packages.x86_64-linux.default;
       agenix = agenix.packages.x86_64-linux.default;
+      fenix = fenix.packages.x86_64-linux.default.toolchain;
     };
 
     apps.x86_64-linux = {
       build-all = {
         type = "app";
+        meta = {
+          description = "build all of the packages in this flake";
+        };
         program = (pkgs.writeShellScriptBin "build-all" ''
           ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: _: "nix build --no-link --print-out-paths .#${name}") self.packages.x86_64-linux)}
         '').outPath + "/bin/build-all";
