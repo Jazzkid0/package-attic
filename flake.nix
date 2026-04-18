@@ -26,6 +26,7 @@
       opencode = opencode.packages.x86_64-linux.default;
       agenix = agenix.packages.x86_64-linux.default;
       fenix = fenix.packages.x86_64-linux.default.toolchain;
+      rust-analyzer = pkgs.rust-analyzer;
     };
 
     apps.x86_64-linux = {
